@@ -50,7 +50,6 @@ if (Meteor.isClient) {
     isOwner: function () {
       return this.owner === Meteor.userId();
     },
-	,
 	//load notes related to task
 	notes: function({
 		return notes.find({concernedtask: this._id});
