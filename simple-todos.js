@@ -1,4 +1,6 @@
 Tasks = new Mongo.Collection("tasks");
+Notes = new Mongo.Collection("notes");
+
  
 if (Meteor.isClient) {
   // This code only runs on the client
@@ -47,7 +49,12 @@ if (Meteor.isClient) {
   Template.task.helpers({
     isOwner: function () {
       return this.owner === Meteor.userId();
-    }
+    },
+	,
+	//load notes related to task
+	notes: function({
+		return notes.find({concernedtask: this._id});
+	});
   });
   
   Template.task.events({
@@ -62,6 +69,7 @@ if (Meteor.isClient) {
       Meteor.call("setPrivate", this._id, ! this.private);
     }
   });
+  
   // account ui set to username
   Accounts.ui.config({
     passwordSignupFields: "USERNAME_ONLY"
@@ -113,7 +121,14 @@ if (Meteor.isClient) {
 		}
 	 
 		Tasks.update(taskId, { $set: { private: setToPrivate } });
-    }
+    },
+	//Insert notes
+	addNote: function (text, taskId) {
+		Notes.insert({
+			content: text,
+			concernedtask: taskId
+		});
+	}
 });
 
 if (Meteor.isServer) {
