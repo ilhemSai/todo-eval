@@ -49,11 +49,7 @@ if (Meteor.isClient) {
   Template.task.helpers({
     isOwner: function () {
       return this.owner === Meteor.userId();
-    },
-	//load notes related to task
-	notes: function({
-		return notes.find({concernedtask: this._id});
-	});
+    }
   });
   
   Template.task.events({
